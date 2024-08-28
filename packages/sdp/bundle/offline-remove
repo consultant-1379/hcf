@@ -1,0 +1,40 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+# Copyright (C) 2015 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+# offline-remove
+##
+# Description:
+# This script is used during the unistallation phase of HCF common component.
+##
+# Note:
+# -
+##
+# Changelog:
+# - 2015-01-09: Alessio Cascone (XCASALE)
+# First version.
+##
+
+# Some useful variables
+RPM_ADD_CMD=cmw-rpm-config-delete
+HCF_RPM_LIST_FILENAME=rpm_list
+HCF_RPM_LIST_FILE_USED_FIELD=2
+
+# Assume RPM files located in same directory as script
+cd $(dirname $0)
+
+# Get the list of RPMs inside this package, using HCF_RPM_LIST_FILE
+RPM_LIST=$(cat $HCF_RPM_LIST_FILENAME | cut -d ' ' -f $HCF_RPM_LIST_FILE_USED_FIELD)
+
+# For each found package, remove it from the CMW configuration
+for item in $RPM_LIST; do
+	$RPM_ADD_CMD $item `hostname`
+	if [ $? != 0 ]; then 
+		exit 1
+	fi
+done
+exit 0
+

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+	<xs:element name="Report">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Job execution report</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="HcJobId" minOccurs="1" maxOccurs="1">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:documentation>Name of the job executed</xs:documentation>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RulesCategory" minOccurs="1" maxOccurs="unbounded">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:documentation>Category that is defined in the job.</xs:documentation>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Date" minOccurs="1" maxOccurs="1"> 
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:documentation>Date and time of job execution.</xs:documentation>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1" />
+							<xs:pattern value="([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Status" minOccurs="1" maxOccurs="1">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:documentation>Health status of the node.</xs:documentation>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="HEALTHY|NOT_HEALTHY|WARNING"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FailedRules" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="HcRule" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>A rule is a formal representation of a check.</xs:documentation>
+									</xs:annotation>
+									<xs:sequence>
+										<xs:element name="InputParameters" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>Optional parameters to be passed by the model.</xs:documentation>
+												</xs:annotation>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+												<xs:attribute name="value" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Description" minOccurs="1" maxOccurs="1">
+											<xs:simpleType>
+												<xs:annotation>
+													<xs:documentation>Short description of the purpose of the rule.</xs:documentation>
+												</xs:annotation>
+													<xs:restriction base="xs:string">
+													<xs:minLength value="1" />
+													<xs:pattern value="[a-zA-Z]+[a-zA-Z0-9 -_:;,.%]*" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Reason" minOccurs="1" maxOccurs="1">
+											<xs:simpleType>
+												<xs:annotation>
+													<xs:documentation>Additional information in case the health check rule execution fails.</xs:documentation>
+												</xs:annotation>
+												<xs:restriction base="xs:string">
+													<xs:minLength value="1" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Severity" minOccurs="1" maxOccurs="1">
+											<xs:simpleType>
+												<xs:annotation>
+													<xs:documentation>Result of the rule.</xs:documentation>
+												</xs:annotation>
+												<xs:restriction base="xs:string">
+												<xs:pattern value="CRITICAL|WARNING"/>
+												</xs:restriction>
+											</xs:simpleType> 
+										</xs:element>
+										<xs:element name="RecommendedAction" minOccurs="1" maxOccurs="1">
+											<xs:simpleType>
+												<xs:annotation>
+													<xs:documentation>Specifies the step that needs to be performed in case the health check rule execution fails.</xs:documentation>
+												</xs:annotation>
+												<xs:restriction base="xs:string">
+													<xs:minLength value="1" />
+													<xs:pattern value="[a-zA-Z]+[a-zA-Z0-9 -_:;.%]*" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>							
+									</xs:sequence>
+									<xs:attribute type="xs:string" name="id" use="required">
+										<xs:annotation>
+											<xs:documentation>Unique identifier within the rule.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>		
+									<xs:attribute type="xs:string" name="name" use="required">
+										<xs:annotation>
+											<xs:documentation>Name of the rule.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>	
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>					
+				</xs:element>
+				<xs:element name="SuccessRules" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="HcRule" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>A rule is a formal representation of a check.</xs:documentation>
+									</xs:annotation>
+									<xs:sequence>
+										<xs:element name="InputParameters" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>Optional parameters to be passed by the model.</xs:documentation>
+												</xs:annotation>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+												<xs:attribute name="value" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute type="xs:string" name="id" use="required">
+										<xs:annotation>
+											<xs:documentation>Unique identifier within the rule.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute type="xs:string" name="name" use="required">
+										<xs:annotation>
+											<xs:documentation>Name of the rule.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>	
+								</xs:complexType>							
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

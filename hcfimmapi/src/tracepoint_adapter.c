@@ -1,0 +1,9 @@
+#define TRACEPOINT_DEFINE
+#define TRACEPOINT_PROBE_DYNAMIC_LINKAGE
+#include "hcf/trace/com_ericsson_common_hcf_imm_immconfigclass.h"
+#include "hcf/trace/com_ericsson_common_hcf_imm_immobject.h"
+#include "hcf/trace/com_ericsson_common_hcf_imm_immobserver.h"
+#include "hcf/trace/com_ericsson_common_hcf_imm_oihandler.h"
+#include "hcf/trace/com_ericsson_common_hcf_imm_oiinterface.h"
+#include "hcf/trace/com_ericsson_common_hcf_imm_omhandler.h"
+#include "hcf/trace/com_ericsson_common_hcf_imm_runtimeowner.h"

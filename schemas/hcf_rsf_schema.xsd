@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+	<xs:element name="RuleSetFile">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Rule" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>A rule is a formal representation of a check.</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>						
+							<xs:element name="Description" type="Not_Empty_String" minOccurs="1"  maxOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Short description of the purpose of the rule.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="RecommendedAction" type="Not_Empty_String" minOccurs="1" maxOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Specifies the step that needs to be performed in case the health check rule execution fails.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Reason" minOccurs="1" maxOccurs="1" type="Not_Empty_String">
+								<xs:annotation>
+									<xs:documentation>Additional information in case the health check rule execution fails.</xs:documentation>
+								</xs:annotation>
+							</xs:element>									
+							<xs:element name="Severity" minOccurs="1" maxOccurs="1">
+								<xs:simpleType>
+									<xs:annotation>
+										<xs:documentation>The severity value of the health check rule.</xs:documentation>
+									</xs:annotation>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="CRITICAL|WARNING"/>
+									</xs:restriction>
+								</xs:simpleType> 
+							</xs:element>							
+							<xs:element name="Attributes" minOccurs="1" maxOccurs="1">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>The configuration attributes for the health check rule.</xs:documentation>
+									</xs:annotation>
+									<xs:sequence>
+										<xs:element name="Params" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>The user-defined input parameters (and their default value) of a customizable rule.</xs:documentation>
+												</xs:annotation>
+												<xs:sequence>
+													<xs:element name="Param" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:annotation>
+																<xs:documentation>An optional parameter that will be used during rule evaluation.</xs:documentation>
+															</xs:annotation>
+															<xs:attribute name="description" type="Not_Empty_String" use="required"/>
+															<xs:attribute name="name" type="Not_Empty_String" use="required"/>
+															<xs:attribute name="defaultValue" type="xs:string" use="required"/>
+															<xs:attribute name="type" use="required">
+																<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="number|string"/>
+																		</xs:restriction>
+																</xs:simpleType>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="EnvVariable" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:annotation>
+																<xs:documentation>An optional parameter that will be used as environment variable to be passed to the command to be executed.</xs:documentation>
+															</xs:annotation>
+															<xs:attribute name="name" type="Not_Empty_String" use="required"/>
+															<xs:attribute name="value" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Include" minOccurs="1" maxOccurs="1">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>The targets on which the rule must be executed.</xs:documentation>
+												</xs:annotation>
+												<xs:sequence>
+												<xs:element ref="Target" minOccurs="1" maxOccurs="unbounded"/>	
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Exclude" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>The targets on which the rule must not be executed.</xs:documentation>
+												</xs:annotation>
+												<xs:sequence>
+													<xs:element ref="Target" minOccurs="1" maxOccurs="unbounded"/> 
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Category" minOccurs="1" maxOccurs="unbounded">
+								<xs:simpleType>
+									<xs:annotation>
+										<xs:documentation>The category which the rule belongs to.</xs:documentation>
+									</xs:annotation>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="MANDATORY" />
+										<xs:enumeration value="PREUPDATE" />
+										<xs:enumeration value="POSTUPDATE" />
+										<xs:enumeration value="PREUPGRADE" />
+										<xs:enumeration value="POSTUPGRADE" />
+										<xs:enumeration value="SHORT" />
+										<xs:enumeration value="DAILY" />
+										<xs:enumeration value="TROUBLESHOOT" />
+										<xs:enumeration value="PREINSTALL" />
+										<xs:enumeration value="BACKOFFICE" />
+										<xs:enumeration value="OTHER" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>		 
+							<xs:element name="Check" minOccurs="1" maxOccurs="1">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>Mandatory data needed for the evaluation of the rule.</xs:documentation>
+									</xs:annotation>
+									<xs:sequence>
+										<xs:element name="ExecEnvironment" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>Tag storing information about a precondition to be fulfilled to execute the rule.</xs:documentation>
+												</xs:annotation>
+												<xs:sequence>
+													<xs:element name="ExecEnvCheck" type="Not_Empty_String" minOccurs="1" maxOccurs="1">
+														<xs:annotation>
+															<xs:documentation>The check to be executed to evaluate the precondition.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ExecEnvCondition" type="Not_Empty_String" minOccurs="1" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>One of the possible printouts to make the precondition fulfilled.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="executeOnConditionMatch" use="optional">
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:pattern value="yes|no"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Os" minOccurs="1" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>Mandatory tag which bundles all data needed for the parsing of an OS printout.</xs:documentation>
+												</xs:annotation>
+												<xs:sequence>
+													<xs:element ref="Command" minOccurs="1" maxOccurs="1"/>
+													<xs:element ref="Printout" minOccurs="1" maxOccurs="1"/>
+													<xs:element ref="Filter" minOccurs="0" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Eval" minOccurs="1" maxOccurs="1">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>This tag bundles the instructions for evaluation of the rule.</xs:documentation>
+												</xs:annotation>
+												<xs:sequence>
+													<xs:element name="And" type="Condition_Seq" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>This tag implements the logical operator AND between evaluations.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Or" type="Condition_Seq" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>This tag implements the logical operator OR between evaluations.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Not" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>This tag implements the logical operator NOT between evaluations.</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:choice>
+																<xs:element ref="All-In-Period"/>
+																<xs:element ref="All-In-Range"/>
+																<xs:element ref="Columns-Equal"/>
+																<xs:element ref="Columns-Greater"/>
+																<xs:element ref="Columns-Less"/>
+																<xs:element ref="Is-Empty"/>
+																<xs:element ref="Is-Equal"/>
+																<xs:element ref="Is-In-Period"/>
+																<xs:element ref="Is-Not-Empty"/>
+																<xs:element ref="Is-Not-Equal"/>
+																<xs:element ref="Is-Subset"/>
+															</xs:choice>
+														</xs:complexType>
+													</xs:element>
+													<xs:element ref="All-In-Period"  minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="All-In-Range"  minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Columns-Equal" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Columns-Greater" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Columns-Less" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Is-Empty" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Is-Equal" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Is-In-Period"  minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Is-Not-Empty" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Is-Not-Equal" minOccurs="0" maxOccurs="unbounded"/>
+													<xs:element ref="Is-Subset" minOccurs="0" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute type="xs:positiveInteger" name="id" use="required">
+							<xs:annotation>
+								<xs:documentation>Unique identifier within the rule.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="provider" use="required">
+							<xs:annotation>
+								<xs:documentation>Unique identifier of the Rule Provider.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="Not_Empty_String">
+									<xs:pattern value="[A-Za-z0-9]*"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute type="Not_Empty_String" name="name" use="required">
+							<xs:annotation>
+								<xs:documentation>Short description about the purpose of the rule.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>	
+						<xs:attribute name="skipLog" use="optional">
+							<xs:annotation>
+								<xs:documentation>A flag used to avoid to log the command and/or the printout for security reasons.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:pattern value="NO_SKIP|COMMAND|PRINTOUT|ALL"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>	
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" use="required">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Unique identifier of the Rule Set File provider.</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="Not_Empty_String">
+						<xs:pattern value="[^-/]*"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="revision" use="required">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Short description about the revision of the rule set file.</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="Not_Empty_String">
+						<xs:pattern value="[a-zA-Z]+[a-zA-Z0-9]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:unique name="idUnique">
+			<xs:selector xpath="rule"/>
+			<xs:field xpath="@id"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="Target">
+		<xs:simpleType>
+			<xs:annotation>
+				<xs:documentation>The target node of the health check rule execution.</xs:documentation>
+			</xs:annotation>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="PL-ALL|SC-ALL|ALL|PL-[0-9]+|SC-[0-9]+" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="Equal">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Filters sectors of the complete printout that have a value equal to a given value in a dedicated column.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="value" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|param|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>        
+	</xs:element>
+	<xs:element name="Greater" >
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Filters sectors of the complete printout that have values greater than a given value in a dedicated column.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="value" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|param|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Less" >
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Filters sectors of the complete printout that have values less than a given value in a dedicated column.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="value" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|param|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Match" >
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Filters sectors of the complete printout that contain a given substring in a dedicated column.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="value" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="param|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Not-Equal" >
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Filters sectors of the complete printout that have a value not equal to a given value in a dedicated column.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="value" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|param|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Range">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Filters sectors of the complete printout that have values within a given value range in a dedicated column.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="min" use="required"/>
+			<xs:attribute name="max" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|param|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="All-In-Period">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if all of the time values contained in the set (filter result, printout) specified by the attribute "set" are within the (start-time, end-time) time period.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="start-time" type="xs:string" use="required"/>
+			<xs:attribute name="end-time" type="xs:string" use="required"/>
+			<xs:attribute name="format" type="Format_Type" use="required" />
+			<xs:attribute name="col-date" type="xs:string" use="optional"/>
+			<xs:attribute name="col-time" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="All-In-Range">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if the values specified by the input set (or by the attribute "col") are within a specified range.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute type="xs:string" name="col" use="optional"/>
+			<xs:attribute type="xs:string" name="min" use="required"/>
+			<xs:attribute type="xs:string" name="max" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Columns-Equal">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if the values specified by the attributes "col-left" and "col-right" are identical.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute type="xs:string" name="col-left" use="required"/>
+			<xs:attribute type="xs:string" name="col-right" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Columns-Greater" >
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if the values specified by the attribute "col-left" are greater than the values specified by the attribute "col-right".</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute type="xs:string" name="col-left" use="required"/>
+			<xs:attribute type="xs:string" name="col-right" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="percent" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="99"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Columns-Less">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if the values specified by the attribute "col-left" are less than the values specified by the attribute "col-right" .</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute type="xs:string" name="col-left" use="required"/>
+			<xs:attribute type="xs:string" name="col-right" use="required"/>
+			<xs:attribute name="type" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="number|string"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="percent" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="99"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Is-Empty">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if the given set (filter result, printout) is empty.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+					<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Is-Equal">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Compares two sets (filter result, printout) and returns "true" if both sets contains the same sectors, otherwise "false".</xs:documentation>
+			</xs:annotation>
+			<xs:attribute type="xs:string" name="set-left" use="required"/>
+			<xs:attribute type="xs:string" name="set-right" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Is-In-Period">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if at least one of the time values contained in the set (filter result, printout) specified by the attribute "set" is within the (start-time, end-time) time period.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="start-time" type="xs:string" use="required"/>
+			<xs:attribute name="end-time" type="xs:string" use="required"/>
+			<xs:attribute name="format" type="Format_Type" use="required" />
+			<xs:attribute name="col-date" type="xs:string" use="optional"/>
+			<xs:attribute name="col-time" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Is-Not-Empty">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Checks if the given set (filter result, printout) is not empty.</xs:documentation>
+			</xs:annotation>
+			<xs:attribute name="set" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[/a-zA-Z]+[/a-zA-Z0-9 ,.;-]*"/>
+					</xs:restriction>
+					</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Is-Not-Equal">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Compares two sets (filter result, printout) and returns "true" if the sets does not contain the same sectors, otherwise "false".</xs:documentation>
+			</xs:annotation>
+			<xs:attribute type="xs:string" name="set-left" use="required"/>
+			<xs:attribute type="xs:string" name="set-right" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Is-Subset">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Compares two sets (filter result, printout) specified by the attribute "subset" is a subset of the set specified by the attribute "superset".</xs:documentation>
+			</xs:annotation>
+			<xs:attribute type="xs:string" name="subset" use="required"/>
+			<xs:attribute type="xs:string" name="superset" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Command" type="Not_Empty_String">
+		<xs:annotation>
+			<xs:documentation>The command which output must be evaluated.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Printout" >
+		<xs:complexType>
+			<xs:sequence>															
+				<xs:element name="Begin" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>The string from where the printout pattern needs to be considered for parsing.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleContent>
+							<xs:extension base="Not_Empty_String">
+								<xs:attribute name="skipFullLine" use="optional">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:pattern value="true|false"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>	
+				<xs:element name="End" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>Tag that bundles information on how the printout ends.</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element name="Normal" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>The string until which the printout pattern needs to be considered for parsing.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleContent>
+										<xs:extension base="Not_Empty_String">
+											<xs:attribute name="skipFullLine" use="optional">
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:pattern value="true|false"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Error" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>Tag that specifies a pattern into the printout that identifies an error condition. If found, the rule result is set to failed.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleContent>
+										<xs:extension base="Not_Empty_String">
+											<xs:attribute name="maxlines">
+												<xs:annotation>
+													<xs:documentation>The maximum number of lines of the error printout.</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:positiveInteger">
+														<xs:pattern value="[1-9][0-9]*"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+											<xs:attribute name="intext" use="optional">
+												<xs:annotation>
+													<xs:documentation>Specifies if the string is into the middle of the row or not.</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:enumeration value="true"/>
+														<xs:enumeration value="false"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>		
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Ignore" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="Not_Empty_String">
+								<xs:annotation>
+									<xs:documentation>Specifies a string pattern into the printout to be ignored.</xs:documentation>
+								</xs:annotation>
+								<xs:attribute name="intext" use="optional">
+									<xs:simpleType>
+										<xs:annotation>
+											<xs:documentation>Specifies if the pattern is present into the middle of the line.</xs:documentation>
+										</xs:annotation>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="true"/>
+											<xs:enumeration value="false"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="lines">
+									<xs:simpleType>
+										<xs:annotation>
+											<xs:documentation>Specifies the number of lines to be ignored.</xs:documentation>
+										</xs:annotation>
+										<xs:restriction base="xs:positiveInteger">
+											<xs:pattern value="[1-9][0-9]*"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>		
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Header" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>Provides info about a column-based printout.</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element name="Column" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>Describes one column of the table.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleContent>
+										<xs:extension base="Not_Empty_String">
+											<xs:attribute name="required" use="required">
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:pattern value="true|false"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:extension>
+									</xs:simpleContent>	
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>																
+						<xs:attribute name="colSeparator" use="optional" type="Not_Empty_String">
+							<xs:annotation>
+								<xs:documentation>Specifies the field separator between two columns into a column-based printout. If not specified, the whitespace is used.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="headerPresence" use="optional">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="true"/>
+									<xs:enumeration value="false"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="level" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:positiveInteger">
+									<xs:pattern value="[1-9][0-9]*"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="maxlines">
+							<xs:simpleType>
+								<xs:restriction base="xs:positiveInteger">
+									<xs:pattern value="[1-9][0-9]*"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute type="xs:string" name="result" use="required"/>
+		</xs:complexType>	
+	</xs:element>
+	<xs:element name="Filter">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Equal" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Greater" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Intersect" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>Tag to intersect the results of two or more sets of sectors.</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element ref="Equal" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Greater" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Less" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Match" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Not-Equal" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Range" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="Less" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Match" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Not-Equal" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Range" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Unite" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>Tag to unite the results of two or more sets of sectors.</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element ref="Equal" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Greater" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Less" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Match" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Not-Equal" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Range" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute type="xs:string" name="result" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Condition_Seq">
+		<xs:sequence>
+			<xs:element ref="All-In-Period"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="All-In-Range"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Columns-Equal"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Columns-Greater"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Columns-Less"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Is-Empty"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Is-Equal"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Is-In-Period"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Is-Not-Empty"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Is-Not-Equal"  minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Is-Subset"  minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Not_Empty_String">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Format_Type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="YYYYMMDD"/>
+			<xs:enumeration value="YYYYDDMM"/>
+			<xs:enumeration value="MMDDYYYY"/>
+			<xs:enumeration value="DDMMYYYY"/>
+			<xs:enumeration value="YYYY/MM/DD"/>
+			<xs:enumeration value="YYYY/DD/MM"/>
+			<xs:enumeration value="DD/MM/YYYY"/>
+			<xs:enumeration value="MM/DD/YYYY"/>
+			<xs:enumeration value="YYYY-MM-DD"/>
+			<xs:enumeration value="YYYY-DD-MM"/>
+			<xs:enumeration value="DD-MM-YYYY"/>
+			<xs:enumeration value="MM-DD-YYYY"/>
+			<xs:enumeration value="YYYY.MM.DD"/>
+			<xs:enumeration value="YYYY.DD.MM"/>
+			<xs:enumeration value="DD.MM.YYYY"/>
+			<xs:enumeration value="MM.DD.YYYY"/>
+			<xs:enumeration value="YYYYMMDDhhmmss"/>
+			<xs:enumeration value="YYYYMMDDhh:mm:ss"/>
+			<xs:enumeration value="YYYYMMDDhh.mm.ss"/>
+			<xs:enumeration value="YYYYDDMMhhmmss"/>
+			<xs:enumeration value="YYYYDDMMhh:mm:ss"/>
+			<xs:enumeration value="YYYYDDMMhh.mm.ss"/>
+			<xs:enumeration value="MMDDYYYYhhmmss"/>
+			<xs:enumeration value="MMDDYYYYhh:mm:ss"/>
+			<xs:enumeration value="MMDDYYYYhh.mm.ss"/>
+			<xs:enumeration value="DDMMYYYYhhmmss"/>
+			<xs:enumeration value="DDMMYYYYhh:mm:ss"/>
+			<xs:enumeration value="DDMMYYYYhh.mm.ss"/>
+			<xs:enumeration value="YYYY/MM/DDhhmmss"/>
+			<xs:enumeration value="YYYY/MM/DDhh:mm:ss"/>
+			<xs:enumeration value="YYYY/MM/DDhh.mm.ss"/>
+			<xs:enumeration value="YYYY/DD/MMhhmmss"/>
+			<xs:enumeration value="YYYY/DD/MMhh:mm:ss"/>
+			<xs:enumeration value="YYYY/DD/MMhh.mm.ss"/>
+			<xs:enumeration value="DD/MM/YYYYhhmmss"/>
+			<xs:enumeration value="DD/MM/YYYYhh:mm:ss"/>
+			<xs:enumeration value="DD/MM/YYYYhh.mm.ss"/>
+			<xs:enumeration value="MM/DD/YYYYhhmmss"/>
+			<xs:enumeration value="MM/DD/YYYYhh:mm:ss"/>
+			<xs:enumeration value="MM/DD/YYYYhh.mm.ss"/>
+			<xs:enumeration value="YYYY-MM-DDhhmmss"/>
+			<xs:enumeration value="YYYY-MM-DDhh:mm:ss"/>
+			<xs:enumeration value="YYYY-MM-DDhh.mm.ss"/>
+			<xs:enumeration value="YYYY-DD-MMhhmmss"/>
+			<xs:enumeration value="YYYY-DD-MMhh:mm:ss"/>
+			<xs:enumeration value="YYYY-DD-MMhh.mm.ss"/>
+			<xs:enumeration value="DD-MM-YYYYhhmmss"/>
+			<xs:enumeration value="DD-MM-YYYYhh:mm:ss"/>
+			<xs:enumeration value="DD-MM-YYYYhh.mm.ss"/>
+			<xs:enumeration value="MM-DD-YYYYhhmmss"/>
+			<xs:enumeration value="MM-DD-YYYYhh:mm:ss"/>
+			<xs:enumeration value="MM-DD-YYYYhh.mm.ss"/>
+			<xs:enumeration value="YYYY.MM.DDhhmmss"/>
+			<xs:enumeration value="YYYY.MM.DDhh:mm:ss"/>
+			<xs:enumeration value="YYYY.MM.DDhh.mm.ss"/>
+			<xs:enumeration value="YYYY.DD.MMhhmmss"/>
+			<xs:enumeration value="YYYY.DD.MMhh:mm:ss"/>
+			<xs:enumeration value="YYYY.DD.MMhh.mm.ss"/>
+			<xs:enumeration value="DD.MM.YYYYhhmmss"/>
+			<xs:enumeration value="DD.MM.YYYYhh:mm:ss"/>
+			<xs:enumeration value="DD.MM.YYYYhh.mm.ss"/>
+			<xs:enumeration value="MM.DD.YYYYhhmmss"/>
+			<xs:enumeration value="MM.DD.YYYYhh:mm:ss"/>
+			<xs:enumeration value="MM.DD.YYYYhh.mm.ss"/>
+			<xs:enumeration value="YYYYMMDD hhmmss"/>
+			<xs:enumeration value="YYYYMMDD hh:mm:ss"/>
+			<xs:enumeration value="YYYYMMDD hh.mm.ss"/>
+			<xs:enumeration value="YYYYDDMM hhmmss"/>
+			<xs:enumeration value="YYYYDDMM hh:mm:ss"/>
+			<xs:enumeration value="YYYYDDMM hh.mm.ss"/>
+			<xs:enumeration value="MMDDYYYY hhmmss"/>
+			<xs:enumeration value="MMDDYYYY hh:mm:ss"/>
+			<xs:enumeration value="MMDDYYYY hh.mm.ss"/>
+			<xs:enumeration value="DDMMYYYY hhmmss"/>
+			<xs:enumeration value="DDMMYYYY hh:mm:ss"/>
+			<xs:enumeration value="DDMMYYYY hh.mm.ss"/>
+			<xs:enumeration value="YYYY/MM/DD hhmmss"/>
+			<xs:enumeration value="YYYY/MM/DD hh:mm:ss"/>
+			<xs:enumeration value="YYYY/MM/DD hh.mm.ss"/>
+			<xs:enumeration value="YYYY/DD/MM hhmmss"/>
+			<xs:enumeration value="YYYY/DD/MM hh:mm:ss"/>
+			<xs:enumeration value="YYYY/DD/MM hh.mm.ss"/>
+			<xs:enumeration value="DD/MM/YYYY hhmmss"/>
+			<xs:enumeration value="DD/MM/YYYY hh:mm:ss"/>
+			<xs:enumeration value="DD/MM/YYYY hh.mm.ss"/>
+			<xs:enumeration value="MM/DD/YYYY hhmmss"/>
+			<xs:enumeration value="MM/DD/YYYY hh:mm:ss"/>
+			<xs:enumeration value="MM/DD/YYYY hh.mm.ss"/>
+			<xs:enumeration value="YYYY-MM-DD hhmmss"/>
+			<xs:enumeration value="YYYY-MM-DD hh:mm:ss"/>
+			<xs:enumeration value="YYYY-MM-DD hh.mm.ss"/>
+			<xs:enumeration value="YYYY-DD-MM hhmmss"/>
+			<xs:enumeration value="YYYY-DD-MM hh:mm:ss"/>
+			<xs:enumeration value="YYYY-DD-MM hh.mm.ss"/>
+			<xs:enumeration value="DD-MM-YYYY hhmmss"/>
+			<xs:enumeration value="DD-MM-YYYY hh:mm:ss"/>
+			<xs:enumeration value="DD-MM-YYYY hh.mm.ss"/>
+			<xs:enumeration value="MM-DD-YYYY hhmmss"/>
+			<xs:enumeration value="MM-DD-YYYY hh:mm:ss"/>
+			<xs:enumeration value="MM-DD-YYYY hh.mm.ss"/>
+			<xs:enumeration value="YYYY.MM.DD hhmmss"/>
+			<xs:enumeration value="YYYY.MM.DD hh:mm:ss"/>
+			<xs:enumeration value="YYYY.MM.DD hh.mm.ss"/>
+			<xs:enumeration value="YYYY.DD.MM hhmmss"/>
+			<xs:enumeration value="YYYY.DD.MM hh:mm:ss"/>
+			<xs:enumeration value="YYYY.DD.MM hh.mm.ss"/>
+			<xs:enumeration value="DD.MM.YYYY hhmmss"/>
+			<xs:enumeration value="DD.MM.YYYY hh:mm:ss"/>
+			<xs:enumeration value="DD.MM.YYYY hh.mm.ss"/>
+			<xs:enumeration value="MM.DD.YYYY hhmmss"/>
+			<xs:enumeration value="MM.DD.YYYY hh:mm:ss"/>
+			<xs:enumeration value="MM.DD.YYYY hh.mm.ss"/>
+			<xs:enumeration value="YYYYMMDDThhmmss"/>
+			<xs:enumeration value="YYYYMMDDThh:mm:ss"/>
+			<xs:enumeration value="YYYYMMDDThh.mm.ss"/>
+			<xs:enumeration value="YYYYDDMMThhmmss"/>
+			<xs:enumeration value="YYYYDDMMThh:mm:ss"/>
+			<xs:enumeration value="YYYYDDMMThh.mm.ss"/>
+			<xs:enumeration value="MMDDYYYYThhmmss"/>
+			<xs:enumeration value="MMDDYYYYThh:mm:ss"/>
+			<xs:enumeration value="MMDDYYYYThh.mm.ss"/>
+			<xs:enumeration value="DDMMYYYYThhmmss"/>
+			<xs:enumeration value="DDMMYYYYThh:mm:ss"/>
+			<xs:enumeration value="DDMMYYYYThh.mm.ss"/>
+			<xs:enumeration value="YYYY/MM/DDThhmmss"/>
+			<xs:enumeration value="YYYY/MM/DDThh:mm:ss"/>
+			<xs:enumeration value="YYYY/MM/DDThh.mm.ss"/>
+			<xs:enumeration value="YYYY/DD/MMThhmmss"/>
+			<xs:enumeration value="YYYY/DD/MMThh:mm:ss"/>
+			<xs:enumeration value="YYYY/DD/MMThh.mm.ss"/>
+			<xs:enumeration value="DD/MM/YYYYThhmmss"/>
+			<xs:enumeration value="DD/MM/YYYYThh:mm:ss"/>
+			<xs:enumeration value="DD/MM/YYYYThh.mm.ss"/>
+			<xs:enumeration value="MM/DD/YYYYThhmmss"/>
+			<xs:enumeration value="MM/DD/YYYYThh:mm:ss"/>
+			<xs:enumeration value="MM/DD/YYYYThh.mm.ss"/>
+			<xs:enumeration value="YYYY-MM-DDThhmmss"/>
+			<xs:enumeration value="YYYY-MM-DDThh:mm:ss"/>
+			<xs:enumeration value="YYYY-MM-DDThh.mm.ss"/>
+			<xs:enumeration value="YYYY-DD-MMThhmmss"/>
+			<xs:enumeration value="YYYY-DD-MMThh:mm:ss"/>
+			<xs:enumeration value="YYYY-DD-MMThh.mm.ss"/>
+			<xs:enumeration value="DD-MM-YYYYThhmmss"/>
+			<xs:enumeration value="DD-MM-YYYYThh:mm:ss"/>
+			<xs:enumeration value="DD-MM-YYYYThh.mm.ss"/>
+			<xs:enumeration value="MM-DD-YYYYThhmmss"/>
+			<xs:enumeration value="MM-DD-YYYYThh:mm:ss"/>
+			<xs:enumeration value="MM-DD-YYYYThh.mm.ss"/>
+			<xs:enumeration value="YYYY.MM.DDThhmmss"/>
+			<xs:enumeration value="YYYY.MM.DDThh:mm:ss"/>
+			<xs:enumeration value="YYYY.MM.DDThh.mm.ss"/>
+			<xs:enumeration value="YYYY.DD.MMThhmmss"/>
+			<xs:enumeration value="YYYY.DD.MMThh:mm:ss"/>
+			<xs:enumeration value="YYYY.DD.MMThh.mm.ss"/>
+			<xs:enumeration value="DD.MM.YYYYThhmmss"/>
+			<xs:enumeration value="DD.MM.YYYYThh:mm:ss"/>
+			<xs:enumeration value="DD.MM.YYYYThh.mm.ss"/>
+			<xs:enumeration value="MM.DD.YYYYThhmmss"/>
+			<xs:enumeration value="MM.DD.YYYYThh:mm:ss"/>
+			<xs:enumeration value="MM.DD.YYYYThh.mm.ss"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

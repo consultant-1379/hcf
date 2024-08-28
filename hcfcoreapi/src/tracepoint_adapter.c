@@ -1,0 +1,14 @@
+#define TRACEPOINT_DEFINE
+#define TRACEPOINT_PROBE_DYNAMIC_LINKAGE
+#include "hcf/trace/com_ericsson_common_hcf_core_alarmtimeplan.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_calendaralarmtimeplan.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_cmdoptionparser.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_cmwlogger.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_epolleventreactor.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_eventreactor.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_oneshotalarmtimeplan.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_periodicalarmtimeplan.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_processdaemonizer.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_thread.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_threadset.h"
+#include "hcf/trace/com_ericsson_common_hcf_core_utils.h"

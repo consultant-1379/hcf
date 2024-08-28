@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign safSmfCampaign="safSmfCampaign=ERIC-HCF-BFU-TEMPLATE-|PROD|-|VER|">
+	<campaignInfo>
+		<campaignPeriod/>
+	</campaignInfo>
+	<campaignInitialization>
+		<addToImm>
+			<amfEntityTypes>
+				<CompBaseType safCompType="safCompType=HC-Control">
+					<CompType safVersion="safVersion=|VER|">
+						<providesCSType saAmfCtCompCapability="3" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=1.0.0\,safCSType=ERIC-HC"/>
+						<compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="10000000000" saAmfCtDefClcCliTimeout="10000000000" saAmfCtDefDisableRestart="0" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="2"/>
+						<instantiateCmd saAmfCtRelPathInstantiateCmd="hcf/bin/hcf.sh">
+							<cmdArgv>start</cmdArgv>
+						</instantiateCmd>
+						<cleanupCmd saAmfCtRelPathCleanupCmd="hcf/bin/hcf.sh">
+							<cmdArgv>cleanup</cmdArgv>
+						</cleanupCmd>
+						<healthCheck saAmfHealthcheckMaxDuration="180000000000" saAmfHealthcheckPeriod="240000000000" safHealthcheckKey="safHealthcheckKey=hcfd_hck"/>
+						<swBundle saAmfCtSwBundle="safSmfBundle=ERIC-HCF-|PROD|-|VER|"/>
+					</CompType>
+				</CompBaseType>
+			</amfEntityTypes>
+		</addToImm>
+	</campaignInitialization>
+	<upgradeProcedure safSmfProcedure="safSmfProc=RollingUpgrade" saSmfExecLevel="1">
+		<outageInfo>
+			<acceptableServiceOutage>
+		<all/>
+		</acceptableServiceOutage>
+		<procedurePeriod saSmfProcPeriod="60000000000" />
+		</outageInfo>
+        <procInitAction>
+			<immCCB ccbFlags="0">
+				<create objectClassName="SaAmfSutCompType" parentObjectDN="safVersion=1.0.0,safSuType=SU">
+					<attribute name="safMemberCompType" type="SA_IMM_ATTR_SANAMET">
+						<value>safMemberCompType=safVersion=|VER|\,safCompType=HC-Control</value>
+					</attribute>
+					<attribute name="saAmfSutMinNumComponents" type="SA_IMM_ATTR_SAUINT32T">
+						<value>1</value>
+					</attribute>
+				</create>
+			</immCCB>
+		</procInitAction>
+		<!--CMW_CAMPAIGN_XML_EXCLUDE_IF(^safMemberCompType=safVersion=|VER|[\\],safCompType=HC-Control,safVersion=1.0.0,safSuType=SU$)-->
+		<procInitAction>
+			<doCliCommand command="$OSAFCAMPAIGNROOT/hcf_update_do_init.sh" args="CMW_GET_USED_BUNDLE_DN(ERIC-HCF-CXP) ERIC-HCF-|PROD|-|VER|"/>
+			<undoCliCommand command="$OSAFCAMPAIGNROOT/hcf_update_undo_init.sh" args="CMW_GET_USED_BUNDLE_DN(ERIC-HCF-CXP) ERIC-HCF-|PROD|-|VER|"/>
+			<plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+		</procInitAction>
+        <!--CMW_CAMPAIGN_XML_EXCLUDE_FI -->
+		<upgradeMethod>
+			<rollingUpgrade>
+				<upgradeScope>
+					<byTemplate>
+						<targetNodeTemplate objectDN="safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster">
+							<swRemove bundleDN="CMW_GET_USED_BUNDLE_DN(ERIC-HCF-CXP)" pathnamePrefix="/opt"/>
+							<swAdd bundleDN="safSmfBundle=ERIC-HCF-|PROD|-|VER|" pathnamePrefix="/opt"/>
+						</targetNodeTemplate>
+						<targetEntityTemplate>
+							<type objectDN="CMW_GETDN(^safVersion=...(|..),safCompType=HC-Control$)"/>
+							<modifyOperation operation="SA_IMM_ATTR_VALUES_REPLACE">
+								<attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+									<value>safVersion=|VER|,safCompType=HC-Control</value>
+								</attribute>
+							</modifyOperation>
+						</targetEntityTemplate>
+					</byTemplate>
+				</upgradeScope>
+				<upgradeStep saSmfStepRestartOption="0" saSmfStepMaxRetry="2"/>
+			</rollingUpgrade>
+		</upgradeMethod>
+        <!--CMW_CAMPAIGN_XML_EXCLUDE_IF(^safMemberCompType=safVersion=|VER|[\\],safCompType=HC-Control,safVersion=1.0.0,safSuType=SU$)-->
+        <procWrapupAction>
+            <immCCB ccbFlags="0">
+                <delete objectDN="CMW_GETDN(^safMemberCompType=safVersion=...(|..)[\\],safCompType=HC-Control,safVersion=1.0.0,safSuType=SU$)"/>
+            </immCCB>
+        </procWrapupAction>
+        <!--CMW_CAMPAIGN_XML_EXCLUDE_FI -->
+	</upgradeProcedure>
+	<campaignWrapup>
+		<waitToCommit/>
+        <!--CMW_CAMPAIGN_XML_EXCLUDE_IF(^safMemberCompType=safVersion=|VER|[\\],safCompType=HC-Control,safVersion=1.0.0,safSuType=SU$)-->
+        <campWrapupAction>
+            <immCCB ccbFlags="0">
+                <delete objectDN="CMW_GETDN(^safSupportedCsType=safVersion=1.0.0[\\],safCSType=ERIC-HC,safVersion=...(|..),safCompType=HC-Control$)"/>
+            </immCCB>
+        </campWrapupAction>
+        <campWrapupAction>
+            <immCCB ccbFlags="0">
+                <delete objectDN="CMW_GETDN(^safHealthcheckKey=hcfd_hck,safVersion=...(|..),safCompType=HC-Control$)"/>
+            </immCCB>
+        </campWrapupAction>
+				<campWrapupAction>
+					<immCCB ccbFlags="0">
+						<delete objectDN="CMW_GETDN(^safVersion=...(|..),safCompType=HC-Control$)"/>
+					</immCCB>
+				</campWrapupAction>
+				<campWrapupAction>
+					<doCliCommand command="$OSAFCAMPAIGNROOT/hcf_update_do_wrapup.sh"/>
+					<undoCliCommand command="/bin/true"/>
+					<plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+				</campWrapupAction>
+        <!--CMW_CAMPAIGN_XML_EXCLUDE_FI -->
+		<waitToAllowNewCampaign/>
+		<removeFromImm/>
+	</campaignWrapup>
+</upgradeCampaign>
+

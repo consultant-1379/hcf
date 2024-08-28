@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.uml.msl.model" version="7.0.0"><feature description="" name="com.ibm.xtools.ruml.feature" url="" version="7.0.0"/></signature>?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/_Ci65ELtmEeSBseGvu2zUOQ/85" xmlns:Default="http:///schemas/Default/_fNm3AAqoEd6-N_NOT9vsCA/2" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/_nfMsYAOYEeWnboDfWIQbJQ/801" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/_Ci65ELtmEeSBseGvu2zUOQ/85 pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_Ci_xkLtmEeSBseGvu2zUOQ?CoreMW%20Profile/CoreMWProfile? http:///schemas/Default/_fNm3AAqoEd6-N_NOT9vsCA/2 pathmap://UML2_MSL_PROFILES/Default.epx#_fNwoAAqoEd6-N_NOT9vsCA?Default/Default? http:///schemas/ECIMBaseProfile/_nfMsYAOYEeWnboDfWIQbJQ/801 pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_nfMsYQOYEeWnboDfWIQbJQ?ECIM%20Base%20Profile/ECIMBaseProfile?">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="HCM_CPI" clientDependency="_OS1OUIXLEd-lToFzlKoOsA">
+    <eAnnotations xmi:id="_NRAMoQwOEdmFcaeZXPdWAQ" source="uml2.diagrams"/>
+    <eAnnotations xmi:id="_s0vOAeTpEeSHc7ntpdBdQg" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:id="_s0vOAuTpEeSHc7ntpdBdQg" key="com.ericsson.ecim.coremw.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <ownedComment xmi:id="_CunrYOTqEeSHc7ntpdBdQg">
+      <body>HCM CPI.</body>
+    </ownedComment>
+    <packageImport xmi:id="_8JbBoIW5Ed-FBpQGdJXi3g">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packageImport xmi:id="_AnUnsOTqEeSHc7ntpdBdQg">
+      <importedPackage href="platform:/resource/HCM/HCM.emx#_mtEOkHpfEeKI95dkCMD57g?HCM/HCM?"/>
+    </packageImport>
+    <packageImport xmi:id="_NGrEUOTqEeSHc7ntpdBdQg">
+      <importedPackage href="platform:/resource/HCM/ECIM_CommonLibrary.emx#_k7blYJaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary?"/>
+    </packageImport>
+    <packageImport xmi:id="_POV7cOTqEeSHc7ntpdBdQg">
+      <importedPackage href="platform:/resource/HCM/ECIM_Top.emx#_UmjfQJmMEd-RhrgDerFWug?ECIM_Top/ECIM_Top?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OS1OUIXLEd-lToFzlKoOsA" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.emx#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Default.epx#_fNwoAAqoEd6-N_NOT9vsCA?Default/Default?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAJNCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAJdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_IrdAUMmBEdqBcN1R6EvWUw?Deployment/Deployment?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_cikwQHVqEeCBgp9CYCosRQ">
+      <eAnnotations xmi:id="_ciq24HVqEeCBgp9CYCosRQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_nfMsYQOYEeWnboDfWIQbJQ?ECIM%20Base%20Profile/ECIMBaseProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_cUcakNQkEd63X4o72aQidQ?ECIM%20Base%20Profile?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_s3SLsOTpEeSHc7ntpdBdQg">
+      <eAnnotations xmi:id="_tvm60OTpEeSHc7ntpdBdQg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_Ci_xkLtmEeSBseGvu2zUOQ?CoreMW%20Profile/CoreMWProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_Br2_QBSXEd-ZjqYFUyJzOw?CoreMW%20Profile?"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_cqA1AHVqEeCBgp9CYCosRQ" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" title="Managed Object Model for Health Check Management" subTitle="" docNo="190 89-APR 901 0574/2" docRev="A" docLang="Uen" docDate="2015-11-30"/>
+  <CoreMWProfile:CmwModel xmi:id="_tvnh4OTpEeSHc7ntpdBdQg" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <Default:Documentation xmi:id="_Cuz4oOTqEeSHc7ntpdBdQg" base_Comment="_CunrYOTqEeSHc7ntpdBdQg"/>
+</xmi:XMI>

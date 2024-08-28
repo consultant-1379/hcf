@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_f-rMIEpjEeWvrYJnjCyhvw">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="HCM_SecurityRoles">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_NRAMoQwOEdmFcaeZXPdWAQ" source="uml2.diagrams"/>
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_CUh9Ucy1EeSbTZkAB_039w" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_CUikYMy1EeSbTZkAB_039w" key="com.ericsson.ecim.coremw.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_gNhpgMy5EeSbTZkAB_039w">
+      <body>This is the Health Check Management Function MOM Security Roles instances MOM.</body>
+    </ownedComment>
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_8JbBoIW5Ed-FBpQGdJXi3g">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OS1OUIXLEd-lToFzlKoOsA" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_hahk8My1EeSbTZkAB_039w" name="HCM_SecurityRoles_Instances">
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_tHjMwMy1EeSbTZkAB_039w" name="HealthCheckManagement_1">
+        <classifier xmi:type="uml:Class" href="ComLocalAuthorization.uml#_f9PscLdhEd-gvvrqzvkuGQ"/>
+        <slot xmi:type="uml:Slot" xmi:id="_0UVjkMy1EeSbTZkAB_039w">
+          <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_zlMNULdqEd-gvvrqzvkuGQ"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_0UWxsMy1EeSbTZkAB_039w">
+            <type xmi:type="uml:Enumeration" href="ComLocalAuthorization.uml#_2GsP0LdhEd-gvvrqzvkuGQ?ComLocalAuthorization/ComLocalAuthorization/PermissionType?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ComLocalAuthorization.uml#_ObsEwLdiEd-gvvrqzvkuGQ?ComLocalAuthorization/ComLocalAuthorization/PermissionType/RWX?"/>
+          </value>
+        </slot>
+        <slot xmi:type="uml:Slot" xmi:id="_9D8_EMy1EeSbTZkAB_039w">
+          <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_AYx5MMWQEd-wpvYbd3kmkQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_At_sEOKoEeSWfvGHtJX6hQ" value="ManagedElement,SystemFunctions,HealthCheckM,*"/>
+        </slot>
+        <slot xmi:type="uml:Slot" xmi:id="_E2lYcMy3EeSbTZkAB_039w">
+          <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_f_K_ELdhEd-gvvrqzvkuGQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_E2l_gMy3EeSbTZkAB_039w" value="HealthCheckManagement_1"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_MNX_0My3EeSbTZkAB_039w" client="_tHjMwMy1EeSbTZkAB_039w">
+        <supplier xmi:type="uml:InstanceSpecification" href="ComLocalAuthorization.uml#_5nbc0OhREeGot-QGCUxvRg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_rLyu4OKnEeSWfvGHtJX6hQ" name="HealthCheckManagement_2">
+        <classifier xmi:type="uml:Class" href="ComLocalAuthorization.uml#_f9PscLdhEd-gvvrqzvkuGQ"/>
+        <slot xmi:type="uml:Slot" xmi:id="_rMerYOKnEeSWfvGHtJX6hQ">
+          <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_f_K_ELdhEd-gvvrqzvkuGQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_4N7IcOKnEeSWfvGHtJX6hQ" value="HealthCheckManagement_2"/>
+        </slot>
+        <slot xmi:type="uml:Slot" xmi:id="__GcfcOKnEeSWfvGHtJX6hQ">
+          <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_zlMNULdqEd-gvvrqzvkuGQ"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="__GdGgOKnEeSWfvGHtJX6hQ">
+            <type xmi:type="uml:Enumeration" href="ComLocalAuthorization.uml#_2GsP0LdhEd-gvvrqzvkuGQ?ComLocalAuthorization/ComLocalAuthorization/PermissionType?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ComLocalAuthorization.uml#_2JUGALdhEd-gvvrqzvkuGQ?ComLocalAuthorization/ComLocalAuthorization/PermissionType/R?"/>
+          </value>
+        </slot>
+        <slot xmi:type="uml:Slot" xmi:id="_CXtb4OKoEeSWfvGHtJX6hQ">
+          <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_AYx5MMWQEd-wpvYbd3kmkQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_CXuC8OKoEeSWfvGHtJX6hQ" value="ManagedElement,SystemFunctions,HealthCheckM,*"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_QTVCMOKoEeSWfvGHtJX6hQ" client="_rLyu4OKnEeSWfvGHtJX6hQ">
+        <supplier xmi:type="uml:InstanceSpecification" href="ComLocalAuthorization.uml#_YpKzIOKlEeSWfvGHtJX6hQ"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_cikwQHVqEeCBgp9CYCosRQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ciq24HVqEeCBgp9CYCosRQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_f-rMIEpjEeWvrYJnjCyhvw"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_CV-HwMy1EeSbTZkAB_039w">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_CynAcMy1EeSbTZkAB_039w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_OZ4X0GthEeWmDty0scjZyw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <CoreMWProfile:CmwModel xmi:id="_OW5VQGthEeWmDty0scjZyw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_OZ4-4GthEeWmDty0scjZyw" base_Package="_hahk8My1EeSbTZkAB_039w" version="1" release="0" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_OZ5l8GthEeWmDty0scjZyw" base_InstanceSpecification="_tHjMwMy1EeSbTZkAB_039w"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_OZ5l8WthEeWmDty0scjZyw" base_Dependency="_MNX_0My3EeSbTZkAB_039w"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_OZ5l8mthEeWmDty0scjZyw" base_InstanceSpecification="_rLyu4OKnEeSWfvGHtJX6hQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_OZ6NAGthEeWmDty0scjZyw" base_Dependency="_QTVCMOKoEeSWfvGHtJX6hQ"/>
+  <Documentation:Documentation xmi:id="_NDFkAGthEeWmDty0scjZyw" base_Comment="_gNhpgMy5EeSbTZkAB_039w"/>
+</xmi:XMI>

@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 30, 2015 9:41:48 AM using:
+	* com.ericsson.ecim.m2m 3.0.2.201509291845
+	* com.ericsson.ecim.dsl 3.0.2.201509291845
+	* com.ericsson.ecim.edm 3.0.2.201509291845
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Health Check Management</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>190 89-APR 901 0574/2</docNum>
+            <docLang>Uen</docLang>
+            <docRev>A</docRev>
+            <docDate>2015-11-30</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XCASALE (Alessio Cascone)</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Alessio Cascone (XCASALE)" contact="alessio.cascone@itslab.it" correction="2" date="" docNo="" name="HCM" namespace="urn:com:ericsson:ecim:HCM" namespacePrefix="hcm" organization="" release="1" revision="" version="1">
+        <description>Health Check Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_HCM"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="0"/>
+            <extension name="ecimMomCorrection" value="0"/>
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <implements correction="0" name="ECIM_HCM" release="0" version="1"/>
+        <struct name="HcRuleInputParameter">
+            <description>Indicates a parameter into a rule that can be changed before a health check evaluation.
+The name, a brief description and the default value are indicated.
+The default value is used in case no user-defined value is provided into attribute inputParameters under MOC HcJob.</description>
+            <structMember name="name">
+                <description>Specifies the parameter name.</description>
+                <string/>
+            </structMember>
+            <structMember name="value">
+                <description>Specifies the parameter value.</description>
+                <string/>
+            </structMember>
+            <structMember name="description">
+                <description>Specifies a brief description of the rule parameter.</description>
+                <string/>
+            </structMember>
+        </struct>
+        <struct name="FailedHcRule">
+            <description>Indicates some information about a failed health check rule.</description>
+            <structMember name="hcRule">
+                <description>Specifies the RDN of the failed health check rule.</description>
+                <string/>
+            </structMember>
+            <structMember name="reason">
+                <description>Specifies a description of the health check rule failure.</description>
+                <string/>
+            </structMember>
+            <structMember name="severity">
+                <description>Specifies the severity of the failed health check rule.</description>
+                <enumRef name="RuleSeverity">
+                    <mimName>HCM</mimName>
+                </enumRef>
+            </structMember>
+        </struct>
+        <struct name="HcRuleParameter">
+            <description>Specifies an optional parameter that could be provided for rule evaluation.</description>
+            <structMember name="name">
+                <description>Specifies the parameter name.</description>
+                <string/>
+            </structMember>
+            <structMember name="value">
+                <description>Specifies the parameter value.</description>
+                <string/>
+            </structMember>
+            <structMember name="hcRule">
+                <description>Specifies the RDN of the HcRule object for which the parameter must be used.
+It must be a string having the format "HcRule=&lt;RULE_ID&gt;".</description>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="HealthStatus">
+            <description>Lists the possible health statuses, based on result of all executed rules.</description>
+            <enumMember name="HEALTHY">
+                <description>Indicates that the NE status is healthy.
+The result of all executed rules is as expected.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="NOT_HEALTHY">
+                <description>Indicates that the NE status is not healthy.
+The result of at least one rule, which severity is CRITICAL, is not as expected.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="WARNING">
+                <description>Indicates that the NE status is warning.    
+The result of at least one rule, which severity is WARNING, is not as expected and the result of all CRITICAL ones is as expected.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>Indicates that the NE status is not available.
+The result of all executed rules is still not available or the execution never started.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="RuleSeverity">
+            <description>Lists the possible severity values of a rule.
+Each value describes how the node healthiness status is affected when the rule result is not the expected one.</description>
+            <enumMember name="CRITICAL">
+                <description>Indicates a rule which failure is critical for ME healthness.
+In that case, the ME requires immediate actions.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="WARNING">
+                <description>Indicates a rule which failure is a warning for ME healthness.
+In that case, the ME requires user attention. </description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="HcCategory">
+            <description>Lists the possible categories to which a health check rule can belong to.
+A category aims to facilitate the execution of rules to help customers the planning of their execution according to specific O&amp;M activity.</description>
+            <enumMember name="BACKOFFICE">
+                <description>Indicates that the rule should be executed for backoffice operation tests.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DAILY">
+                <description>Indicates that the rule should be executed daily.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="MANDATORY">
+                <description>Indicates that the rule should always be executed.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="POSTUPDATE">
+                <description>Indicates that the rule should be executed after an update.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="POSTUPGRADE">
+                <description>Indicates that the rule should be executed after an upgrade.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="PREINSTALL">
+                <description>Indicates that the rule be executed before an installation.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="PREUPDATE">
+                <description>Indicates that the rule should be executed before an update.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="PREUPGRADE">
+                <description>Indicates that the rule should be executed before an upgrade.</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="SHORT">
+                <description>Indicates that the rule should be executed for quick checks.</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="TROUBLESHOOT">
+                <description>Indicates that the rule should be executed for troubleshooting.</description>
+                <value>9</value>
+            </enumMember>
+            <enumMember name="OTHER">
+                <description>Indicates that the rule is not included in any of other categories.</description>
+                <value>10</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EcimPasswordString">
+            <description>Holds the password string.</description>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <class name="HealthCheckM">
+            <description>Represents the root MOC for Health Check Management function.
+The Health Check Management function reports summary views of the managed element current state highlighting any deviations from a normal behavior. It can be used to attend upgrades and to support preventive maintenance and problem resolution.
+The healthiness status is obtained by verifying a set of rules according to their severity, grouped in predefined categories. For instance, if the result of at least one critical rule is not as expected, node status is evaluated as not healthy requiring an immediate action.
+The categories of rules which the Health Check Management function is acting upon are system installed.
+A health check job can be created selecting one or more categories of rules on which the ME healthiness is evaluated.
+A report file is generated for each executed health check job and stored in the predefined folder with a compressed archive file containing logs used for the rules evaluation to be used for further investigation.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="healthCheckMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="lastUpdateTime">
+                <description>Specifies the date and time of the last time the health of the system has been updated.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastExecutedJob">
+                <description>Specifies the DN of the last job executed to check the ME healthiness.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="HcJob">
+                        <mimName>HCM</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastStatus">
+                <description>Specifies the ME healthiness status according to the last executed job.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="HealthStatus">
+                        <defaultValue>NOT_AVAILABLE</defaultValue>
+                        <mimName>HCM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="maxNoOfReportFiles">
+                <description>Specifies the maximum number of report files with related log files archive maintained in the ME.
+If a new file is created and the limit is exceeded, the oldest file is deleted.</description>
+                <dataType>
+                    <uint16>
+                        <defaultValue>10</defaultValue>
+                    </uint16>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="HcJob">
+            <description>Represents a health check job which can be executed on a ME.
+This class facilitates in executing one or more categories of health check rules.
+After each job execution the attributes 'lastUpdateTime' and 'lastStatus' in HealthCheckM MOC are updated accordingly.
+It is possible to execute the job on demand or by a scheduler.
+A report file is generated for each executed health check job and stored in the predefined folder with a compressed archive file containing logs used for the rules evaluation to be used for further investigation.</description>
+            <action name="execute">
+                <description>Executes the health check job.
+This action executes the health check job, executing the rules for the configured categories, and optionally exports the report file.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="0"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="exportUri">
+                    <description>Specifies the URI where the job execution output file is to be exported.
+This URI must not contain the file name, that is specified by 'lastReportFileName' attribute value.
+
+The generic URI syntax is defined by RFC 3986. The URI must not contain any password. (The password must be provided in the second parameter of this action).
+The URI may be local relative (e.g., data/dir/subdir/), or local absolute (e.g., file:///data/dir/subdir/), or remote (sftp://user@hostname/dir/subdir/).
+If the URI is local absolute, report and logs archive files are stored under the provided local path.
+If the URI is local relative, report and logs archive files are stored under the file system path built chaining the value of localFileStorePath attribute with the provided relative path.
+If the URI is remote, report and logs archive files are stored under the provided remote path.
+Note: HTTP based URIs are not supported.</description>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="exportPassword">
+                    <description>Specifies the password required to access the location specified by the URI. 
+This parameter is considered only if a SFTP URI is provided, otherwise it is ignored.</description>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="EcimPasswordString">
+                            <mimName>HCM</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="hcJobId">
+                <description>Holds the name used when identifying the MO.
+Specifies the name of the health check job.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="progressReport">
+                <description>Specifies the execution status and result of the health check job.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastReportFileName">
+                <description>Specifies the name of the report file which is generated from the latest execution of the job.
+All the report files are placed in a predefined folder, as indicated by the 'localFileStorePath' attribute value. An archive containing some log files is generated as well.
+The name format of the report file generated is &lt;MEId&gt;_&lt;JobName&gt;_&lt;Timestamp&gt;. Timestamp is in the format YYYYMMDDTHHmmSS, where 4 digits for the year, 2 digits for the month, 2 digits for the date, 2 digits for the hours, 2 digits for the minutes and 2 digits for the seconds are specified. 'T' acts as a delimiter between date and time in the above timestamp format. If the job is executed by the action, the suffix "_man" is added at the end of the file name.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="status">
+                <description>Specifies the health status based on result of all executed rules. </description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="HealthStatus">
+                        <defaultValue>NOT_AVAILABLE</defaultValue>
+                        <mimName>HCM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="rulesCategories">
+                <description>Specifies the list of categories of health check rules to be executed.</description>
+                <mandatory/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="HcCategory">
+                            <mimName>HCM</mimName>
+                        </enumRef>
+                        <minLength>1</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="lastRunTime">
+                <description>Specifies the date and time of the last time the job has been executed.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="jobToTrigger">
+                <description>Specifies the DN of another job to be executed when the current job reports ME is not healthy.
+The execution of another job, for instance to execute rules associated to different categories, might give more detailed information about NE status.</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="HcJob">
+                        <mimName>HCM</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="failedRules">
+                <description>Provides a condensed status for the last job execution.
+Provides the list of the rules for which the result was not the expected one. 
+It is empty when job status is healthy or not available.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <structRef name="FailedHcRule">
+                            <mimName>HCM</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="localFileStorePath">
+                <description>Specifies the filesystem path where the ouput report files can be fetched.
+It is empty if FileM is not installed/configured.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="inputParameters">
+                <description>Specifies customizable input parameters for rules evaluation.
+Each item in the list is a triple &lt;hcRule, parameter_name, parameter_value&gt; for which a user-defined attribute can be provided.</description>
+                <dataType>
+                    <sequence>
+                        <structRef name="HcRuleParameter">
+                            <mimName>HCM</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HcRule">
+            <description>Represents a health check rule.
+This class facilitates in providing detailed information about an individual health check rule.
+Each rule belongs to one or more health check categories.
+Each rule is also associated with a severity value, warning or critical, that affects the evaluation of the overall NE healthiness. For instance, if the result of at least one critical rule is not as expected, node status is evaluated as not healthy requiring an immediate action.
+Some health check rules can accept optional parameters as input for the evaluation, if no values are provided system default input parameters are used.</description>
+            <systemCreated/>
+            <attribute name="hcRuleId">
+                <description>Holds the name used when identifying the MO.
+Its value is divided into two parts. The first one is an unique identifier for the rule provider while the second one is a numeric identifier (a progressive number for example).</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Specifies health check rule description.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="name">
+                <description>Specifies the name of a health check rule.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="recommendedAction">
+                <description>Specifies the step that needs to be performed when the health check rule execution fails.</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="severity">
+                <description>Specify the severity of the rule for the evaluation of the overall NE healthiness.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="RuleSeverity">
+                        <mimName>HCM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="inputParameters">
+                <description>Specifies the list of input parameters accepted by the rule with related default values.
+It is empty in case the rule does not accept any parameters change.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <structRef name="HcRuleInputParameter">
+                            <mimName>HCM</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>Specifies the administrative state of the rule. </description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>UNLOCKED</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="categories">
+                <description>Specifies the list of categories which the rule belongs to.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="HcCategory">
+                            <mimName>HCM</mimName>
+                        </enumRef>
+                        <minLength>1</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HcJobScheduler">
+            <description>Represents the health check job scheduler to start a job automatically at a specified time.
+Three scheduling policies are supported:
+1. Single event: Executes a health check job once at a specified date and time.
+2. Periodic event: Executes a health check job regularly at a specified time interval.
+3. Calendar based periodic event: Executes a health check job regularly at a desired interval using calendar.
+
+Once the MO HcJobScheduler is created, MOs HcSingleEvent, HcPeriodicEvent and HcCalendarPeriodicEvent can be created for each of such events.
+Scheduler requires to be unlocked to start job execution setting the attribute 'administrativeState'.</description>
+            <systemCreated/>
+            <attribute name="hcJobSchedulerId">
+                <description>Holds the name used when identifying the MO.
+Specifies the name of the health check job scheduler.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="nextScheduledTime">
+                <description>Specifies the date and time when the next scheduled event is triggered.
+This is the earliest scheduled event from among the set of configured events (single, periodic and calendar-based periodic events).</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>Specifies the administrative state of the scheduler.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HcSingleEvent">
+            <description>Represents a date/time based event for executing a health check job once.
+A single (one-shot) scheduled health check job is executed at the date and time specified by 'scheduledTime' attribute.</description>
+            <attribute name="hcSingleEventId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="scheduledTime">
+                <description>Scheduled time.</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HcPeriodicEvent">
+            <description>Represents a time interval based event for executing one health check job periodically.
+This construct can be used to execute periodically a health check job by specifying the number of months, weeks, days, hours, or minutes. For instance, in order to trigger a health check job execution every 12 hours, the following setup must be done:
+hours=12
+
+The start time for calculating scheduled events is assumed to be the current system time by default, unless explicitly set using the 'startTime' attribute. Furthermore, if the configured event is to stop at a specific date, 'stopTime' attribute must be set accordingly. Note that the default value of 'stopTime' is the end of century.</description>
+            <attribute name="hcPeriodicEventId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="months">
+                <description>Deprecated, The number of months.&#13;
+Replaced by CalendarBasedPeriodicEvent.month.</description>
+                <dataType>
+                    <uint16>
+                        <defaultValue>0</defaultValue>
+                    </uint16>
+                </dataType>
+                <deprecated/>
+            </attribute>
+            <attribute name="weeks">
+                <description>The number of weeks.</description>
+                <dataType>
+                    <uint16>
+                        <defaultValue>0</defaultValue>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="days">
+                <description>The number of days.</description>
+                <dataType>
+                    <uint16>
+                        <defaultValue>0</defaultValue>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="hours">
+                <description>The number of hours.</description>
+                <mandatory/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="minutes">
+                <description>The number of minutes.</description>
+                <dataType>
+                    <uint16>
+                        <defaultValue>0</defaultValue>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="startTime">
+                <description>Start time. It is an optional attribute.&#13;
+If not specified, the implementation uses the current system time as the default value.</description>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="stopTime">
+                <description>Stop time. It is an optional attribute. The default value is the end of the century.</description>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <defaultValue>2099-12-31T23:59:59</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HcCalendarBasedPeriodicEvent">
+            <description>Represents a calendar based event for executing one health check job periodically.
+This construct can be used to execute periodically a health check job by specifying the desired interval using calendar. For instance, in order to trigger a health check job execution every night at 2:00 am, the following setup must be done:
+time=02:00:00
+
+The start time for calculating scheduled events is assumed to be the current system time by default, unless explicitly set using the 'startTime' attribute. Furthermore, if the configured event is to stop at a specific date, 'stopTime' attribute must be set accordingly. Note that the default value of 'stopTime' is the end of century.
+A scheduled event of this type is triggered only if ALL the conditions with regard to attribute values are satisfied. For example, if "dayOfWeek" is set to Monday and "dayOfMonth" is set to 1, the event will be triggered only if the first day of month is Monday.
+Daylight saving adjustments in Spring and Fall are addressed such that the affected scheduled events are triggered exactly once.</description>
+            <attribute name="hcCalendarBasedPeriodicEventId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="month">
+                <description>Month.</description>
+                <dataType>
+                    <derivedDataTypeRef name="Month">
+                        <defaultValue>0</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dayOfWeek">
+                <description>Day of week.</description>
+                <dataType>
+                    <enumRef name="DayOfWeek">
+                        <defaultValue>ALL</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="dayOfMonth">
+                <description>Day of month.</description>
+                <dataType>
+                    <derivedDataTypeRef name="DayOfMonth">
+                        <defaultValue>0</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="time">
+                <description>This is the time when the scheduled event must occur.</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="Time">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dayOfWeekOccurrence">
+                <description>The occurrence of the day of week specified by dayOfWeek attribute in the month.</description>
+                <dataType>
+                    <enumRef name="DayOfWeekOccurrence">
+                        <defaultValue>ALL</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="startTime">
+                <description>Start time. It is an optional attribute. &#13;
+If not specified, the implementation uses the current system time as the default value.</description>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="stopTime">
+                <description>Stop time. It is an optional attribute. The default value is the end of the century.</description>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <defaultValue>2099-12-31T23:59:59</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="HealthCheckM_to_HcJob">
+            <containment>
+                <parent>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HcJob">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="HcJob_to_HcJobScheduler">
+            <containment>
+                <parent>
+                    <hasClass name="HcJob">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HcJobScheduler">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="HcJobScheduler_to_HcSingleEvent">
+            <containment>
+                <parent>
+                    <hasClass name="HcJobScheduler">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HcSingleEvent">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="HcJobScheduler_to_HcPeriodicEvent">
+            <containment>
+                <parent>
+                    <hasClass name="HcJobScheduler">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HcPeriodicEvent">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="HcJobScheduler_to_HcCalendarBasedPeriodicEvent">
+            <containment>
+                <parent>
+                    <hasClass name="HcJobScheduler">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HcCalendarBasedPeriodicEvent">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="HealthCheckM_to_HcRule">
+            <containment>
+                <parent>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HcRule">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SystemFunctions_to_HealthCheckM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HCM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib correction="0" name="HCMInstances" release="0" version="1">
+        <object parentDn="">
+            <hasClass name="HealthCheckM">
+                <mimName>HCM</mimName>
+            </hasClass>
+            <slot name="healthCheckMId">
+                <value>1</value>
+            </slot>
+        </object>
+    </mib>
+</models>

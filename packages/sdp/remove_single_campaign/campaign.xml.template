@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign safSmfCampaign="safSmfCampaign=ERIC-HCF-R2-TEMPLATE-|PROD|-|VER|">  
+  <campaignInfo>
+    <campaignPeriod/>
+  </campaignInfo>
+  <campaignInitialization>
+    <addToImm/>
+  </campaignInitialization>
+  <upgradeProcedure saSmfExecLevel="1" safSmfProcedure="safSmfProc=SingleStepProc1">
+  	<outageInfo>
+  		<acceptableServiceOutage>
+  			<all/>
+  		</acceptableServiceOutage>
+  		<procedurePeriod saSmfProcPeriod="600000000"/>
+  	</outageInfo>
+	<upgradeMethod>
+  		<singleStepUpgrade>
+  			<upgradeScope>
+  				<forAddRemove>
+  					<deactivationUnit>
+  						<actedOn>
+  							<byName objectDN="safSu=SU-0,safSg=2N,safApp=ERIC-HC"/>
+  						</actedOn>
+  						<swRemove bundleDN="safSmfBundle=ERIC-HCF-|PROD|-|VER|" pathnamePrefix="/opt">
+  							<plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+  						</swRemove>
+  					</deactivationUnit>
+  					<activationUnit/>
+  				</forAddRemove>
+  			</upgradeScope>
+  			<upgradeStep/>
+  		</singleStepUpgrade>
+  	</upgradeMethod>
+  	<procWrapupAction>
+      	<doCliCommand command="$OSAFCAMPAIGNROOT/hcf_remove.sh" args="ERIC-HCF-|PROD|-|VER|"/>
+      	<undoCliCommand command="/bin/false"/>
+      	<plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+    </procWrapupAction>
+    <procWrapupAction>
+  		<doAdminOperation objectDN="safSg=2N,safApp=ERIC-HC"
+  			operationID="SA_AMF_ADMIN_LOCK">
+  		</doAdminOperation>
+  		<undoAdminOperation/>
+  	</procWrapupAction>
+  	<procWrapupAction>
+  		<doAdminOperation objectDN="safSg=2N,safApp=ERIC-HC"
+  			operationID="SA_AMF_ADMIN_LOCK_INSTANTIATION">
+  		</doAdminOperation>
+  		<undoAdminOperation/>
+  	</procWrapupAction>
+  	<procWrapupAction>
+      	<immCCB ccbFlags="0">
+        	<delete objectDN="safSupportedCsType=safVersion=1.0.0\,safCSType=ERIC-HC,safComp=HC-Control-0,safSu=SU-0,safSg=2N,safApp=ERIC-HC"/>
+        	<delete objectDN="safHealthcheckKey=hcfd_hck,safComp=HC-Control-0,safSu=SU-0,safSg=2N,safApp=ERIC-HC"/>
+      		<delete objectDN="safCsi=HC-CSI-0,safSi=HC-SI-0,safApp=ERIC-HC"/>			
+        	<delete objectDN="safComp=HC-Control-0,safSu=SU-0,safSg=2N,safApp=ERIC-HC"/>
+      	</immCCB>
+    </procWrapupAction>
+    <procWrapupAction>
+      	<immCCB ccbFlags="0">
+        	<delete objectDN="safSi=HC-SI-0,safApp=ERIC-HC"/>
+        	<delete objectDN="safSu=SU-0,safSg=2N,safApp=ERIC-HC"/>
+      	</immCCB>
+    </procWrapupAction>
+    <procWrapupAction>
+      	<immCCB ccbFlags="0">
+        	<delete objectDN="safSg=2N,safApp=ERIC-HC"/>
+      	</immCCB>
+    </procWrapupAction>
+    <procWrapupAction>
+      	<immCCB ccbFlags="0">
+        	<delete objectDN="safApp=ERIC-HC"/>
+      	</immCCB>
+    </procWrapupAction>
+    <procWrapupAction>
+      	<doCliCommand command="cmw-sdp-remove" args="ERIC-HCF-|PROD|-|VER|"/>
+      	<undoCliCommand command="/bin/false"/>
+      	<plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+    </procWrapupAction>
+  </upgradeProcedure>
+  <campaignWrapup>
+    <waitToCommit/>
+    <campWrapupAction>
+		<immCCB ccbFlags="0">
+			<delete objectDN="safMemberCompType=safVersion=|VER|\,safCompType=HC-Control,safVersion=1.0.0,safSuType=SU"/>
+			<delete objectDN="safSupportedCsType=safVersion=1.0.0\,safCSType=ERIC-HC,safVersion=|VER|,safCompType=HC-Control"/>
+			<delete objectDN="safMemberCSType=safVersion=1.0.0\,safCSType=ERIC-HC,safVersion=1.0.0,safSvcType=ERIC-HC"/>
+			<delete objectDN="safHealthcheckKey=hcfd_hck,safVersion=|VER|,safCompType=HC-Control"/>
+		</immCCB>
+	</campWrapupAction>
+    <campWrapupAction>
+    	<immCCB ccbFlags="0">
+    		<delete objectDN="safVersion=1.0.0,safAppType=ERIC-HC"/>
+    		<delete objectDN="safVersion=|VER|,safCompType=HC-Control"/>
+    		<delete objectDN="safVersion=1.0.0,safCSType=ERIC-HC"/>
+    		<delete objectDN="safVersion=1.0.0,safSgType=2N"/>
+    		<delete objectDN="safVersion=1.0.0,safSuType=SU"/>
+    		<delete	objectDN="safVersion=1.0.0,safSvcType=ERIC-HC"/>
+    	</immCCB>
+    </campWrapupAction>
+  	<campWrapupAction>
+  		<immCCB ccbFlags="0">
+  			<delete objectDN="safAppType=ERIC-HC"/>
+  			<delete objectDN="safCSType=ERIC-HC"/>
+  			<delete	objectDN="safCompType=HC-Control"/>
+  			<delete objectDN="safSgType=2N"/>
+  			<delete objectDN="safSuType=SU"/>
+  			<delete objectDN="safSvcType=ERIC-HC"/>
+  		</immCCB>
+  	</campWrapupAction>
+  	<waitToAllowNewCampaign/>
+    <removeFromImm/>
+  </campaignWrapup>
+</upgradeCampaign>
